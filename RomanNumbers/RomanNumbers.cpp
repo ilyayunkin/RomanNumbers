@@ -44,3 +44,36 @@ QString RomanNumbers::toString(const unsigned int number)
     }
     return QString();
 }
+
+unsigned int RomanNumbers::toUInt(const QString &input)
+{
+    if(input.isEmpty())
+        throw std::runtime_error("Empty input");
+
+    unsigned int ret = 0;
+    auto previous = 1u;
+    for(auto inputIt = std::rbegin(input); inputIt != std::rend(input); ++inputIt)
+    {
+        const auto it = std::find_if(std::begin(symbols), std::end(symbols),
+                                     [&inputIt](const auto &d){return *inputIt == d.s;});
+        if(it != std::end(symbols))
+        {
+            if((it->value == previous) && ((previous == 5 )
+                                           || (previous == 50)
+                                           || (previous == 500)))
+            {
+                throw std::runtime_error("Invalid format");
+            }
+            if(it->value >= previous)
+            {
+                ret+= it->value;
+            }else
+            {
+                ret-= it->value;
+            }
+            previous = it->value;
+        }else
+            throw std::runtime_error("Invalid symbol");
+    }
+    return ret;
+}

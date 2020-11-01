@@ -14,14 +14,21 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_ConvertsToBaseSymbols();
-    void test_ConvertsBaseSymbolsQuants();
-    void test_ConvertsNumbersWithAddition();
-    void test_ConvertsNumbersWithSubstraction();
-    void test_ConvertsComplexNumbers();
-    void test_ThrowsExceptionIfNumberLargerMaxValue();
+    void test_ToStringConvertsToBaseSymbols();
+    void test_ToStringConvertsBaseSymbolsQuants();
+    void test_ToStringConvertsNumbersWithAddition();
+    void test_ToStringConvertsNumbersWithSubstraction();
+    void test_ToStringConvertsComplexNumbers();
+    void test_ToStringThrowsExceptionIfNumberLargerMaxValue();
+    void ToStringBenchmark();
 
-    void benchmark();
+    void test_ToUintConvertsBaseSymbols();
+    void test_ToUintConvertsBaseSymbolsQuants();
+    void test_ToUintConvertsNumbersWithAddition();
+    void test_ToUintConvertsNumbersWithSubstraction();
+    void test_ToUintThrowsExceptionIfInputIsEmpty();
+    void test_ToUintThrowsExceptionIfInputContainsRepeated5th();
+    void test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols();
 };
 
 RomanNumbersTest::RomanNumbersTest()
@@ -44,9 +51,9 @@ void RomanNumbersTest::cleanupTestCase()
 
 }
 
-void RomanNumbersTest::test_ConvertsToBaseSymbols()
+void RomanNumbersTest::test_ToStringConvertsToBaseSymbols()
 {
-    constexpr struct{int i; const char *const s;} lines[]  = {
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
     {1, "I"},
     {5, "V"},
     {10, "X"},
@@ -62,9 +69,9 @@ void RomanNumbersTest::test_ConvertsToBaseSymbols()
     }
 }
 
-void RomanNumbersTest::test_ConvertsBaseSymbolsQuants()
+void RomanNumbersTest::test_ToStringConvertsBaseSymbolsQuants()
 {
-    constexpr struct{int i; const char *const s;} lines[]  = {
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
     {1, "I"},
     {2, "II"},
     {3, "III"},
@@ -88,9 +95,9 @@ void RomanNumbersTest::test_ConvertsBaseSymbolsQuants()
     }
 }
 
-void RomanNumbersTest::test_ConvertsNumbersWithAddition()
+void RomanNumbersTest::test_ToStringConvertsNumbersWithAddition()
 {
-    constexpr struct{int i; const char *const s;} lines[]  = {
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
     {6, "VI"},
     {7, "VII"},
     {8, "VIII"},
@@ -104,9 +111,9 @@ void RomanNumbersTest::test_ConvertsNumbersWithAddition()
     }
 }
 
-void RomanNumbersTest::test_ConvertsNumbersWithSubstraction()
+void RomanNumbersTest::test_ToStringConvertsNumbersWithSubstraction()
 {
-    constexpr struct{int i; const char *const s;} lines[]  = {
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
     {4, "IV"},
     {9, "IX"},
     {40, "XL"},
@@ -120,9 +127,9 @@ void RomanNumbersTest::test_ConvertsNumbersWithSubstraction()
     }
 }
 
-void RomanNumbersTest::test_ConvertsComplexNumbers()
+void RomanNumbersTest::test_ToStringConvertsComplexNumbers()
 {
-    constexpr struct{int i; const char *const s;} lines[]  = {
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
     {4, "IV"},
     {6, "VI"},
     {7, "VII"},
@@ -144,7 +151,7 @@ void RomanNumbersTest::test_ConvertsComplexNumbers()
     }
 }
 
-void RomanNumbersTest::test_ThrowsExceptionIfNumberLargerMaxValue()
+void RomanNumbersTest::test_ToStringThrowsExceptionIfNumberLargerMaxValue()
 {
     try {
         auto result = RomanNumbers::toString(RomanNumbers::maxValue + 1);
@@ -154,11 +161,133 @@ void RomanNumbersTest::test_ThrowsExceptionIfNumberLargerMaxValue()
     }
 }
 
-void RomanNumbersTest::benchmark()
+void RomanNumbersTest::ToStringBenchmark()
 {
     QBENCHMARK {
         unsigned int r = std::abs(rand() % RomanNumbers::maxValue + 1);
         RomanNumbers::toString(r);
+    }
+}
+
+void RomanNumbersTest::test_ToUintConvertsBaseSymbols()
+{
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
+    {1, "I"},
+    {5, "V"},
+    {10, "X"},
+    {50, "L"},
+    {100, "C"},
+    {500, "D"},
+    {1000, "M"}
+};
+    for(auto line : lines)
+    {
+        auto result = RomanNumbers::toUInt(QString(line.s));
+        QCOMPARE(result, line.i);
+    }
+}
+
+void RomanNumbersTest::test_ToUintConvertsBaseSymbolsQuants()
+{
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
+    {1, "I"},
+    {2, "II"},
+    {3, "III"},
+    {5, "V"},
+    {10, "X"},
+    {20, "XX"},
+    {30, "XXX"},
+    {50, "L"},
+    {100, "C"},
+    {200, "CC"},
+    {300, "CCC"},
+    {500, "D"},
+    {1000, "M"},
+    {2000, "MM"},
+    {3000, "MMM"}
+};
+    for(auto line : lines)
+    {
+        auto result = RomanNumbers::toUInt(QString(line.s));
+        QCOMPARE(result, line.i);
+    }
+}
+
+void RomanNumbersTest::test_ToUintConvertsNumbersWithAddition()
+{
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
+    {6, "VI"},
+    {7, "VII"},
+    {8, "VIII"},
+    {60, "LX"},
+    {80, "LXXX"}
+};
+    for(auto line : lines)
+    {
+        auto result = RomanNumbers::toUInt(QString(line.s));
+        QCOMPARE(result, line.i);
+    }
+}
+
+void RomanNumbersTest::test_ToUintConvertsNumbersWithSubstraction()
+{
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
+    {4, "IV"},
+    {9, "IX"},
+    {40, "XL"},
+    {90, "XC"},
+    {400, "CD"}
+};
+    for(auto line : lines)
+    {
+        auto result = RomanNumbers::toUInt(QString(line.s));
+        QCOMPARE(result, line.i);
+    }
+}
+
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputIsEmpty()
+{
+    try {
+        RomanNumbers::toUInt("");
+        QVERIFY(false);
+    } catch (...) {
+        QVERIFY(true);
+    }
+}
+
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsRepeated5th()
+{
+    const char *const lines[] = {
+        "VV",
+        "LLL",
+        "DD"
+    };
+    for(auto line : lines)
+    {
+        try {
+            RomanNumbers::toUInt(line);
+            QVERIFY(false);
+        } catch (...) {
+            QVERIFY(true);
+        }
+    }
+}
+
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols()
+{
+    const char *const lines[] = {
+        "123",
+        "CCME",
+        "WE"
+    };
+    for(auto line : lines)
+    {
+        try {
+            RomanNumbers::toUInt(line);
+            QVERIFY(false);
+        } catch (...) {
+            QVERIFY(true);
+        }
     }
 }
 

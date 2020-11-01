@@ -16,7 +16,8 @@ public:
     ~RomanNumbersWidget();
 
 private slots:
-    void on_pushButton_clicked();
+    void toString(int value);
+    void toInt();
 
 private:
     Ui::RomanNumbersWidget *ui;

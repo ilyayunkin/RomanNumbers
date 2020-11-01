@@ -3,14 +3,17 @@
 #include "RomanNumbers.h"
 
 #include <QMessageBox>
+#include <QtGlobal>
 
 RomanNumbersWidget::RomanNumbersWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::RomanNumbersWidget)
 {
     ui->setupUi(this);
-    connect(ui->inputSpinBox, &QSpinBox::editingFinished,
-            this, &RomanNumbersWidget::on_pushButton_clicked);
+    connect(ui->inputSpinBox, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &RomanNumbersWidget::toString);
+    connect(ui->resultLineEdit, &QLineEdit::returnPressed,
+            this, &RomanNumbersWidget::toInt);
 }
 
 RomanNumbersWidget::~RomanNumbersWidget()
@@ -18,14 +21,25 @@ RomanNumbersWidget::~RomanNumbersWidget()
     delete ui;
 }
 
-void RomanNumbersWidget::on_pushButton_clicked()
+void RomanNumbersWidget::toString(int value)
 {
     try {
-        ui->resultLineEdit->setText(
-                    RomanNumbers::toString(ui->inputSpinBox->value()));
+        ui->resultLineEdit->setText(RomanNumbers::toString(value));
     } catch (...) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Input number between 1 and %1")
+                              .arg(RomanNumbers::maxValue));
+    }
+}
+
+void RomanNumbersWidget::toInt()
+{
+    try {
+        ui->inputSpinBox->setValue(
+                    RomanNumbers::toUInt(ui->resultLineEdit->text()));
+    } catch (...) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Invalid input. Input number between 1 and %1")
                               .arg(RomanNumbers::maxValue));
     }
 }
