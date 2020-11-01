@@ -3,7 +3,7 @@
 #include <algorithm>
 
 namespace  {
-constexpr struct{unsigned int value; QChar s;} symbols[] ={
+constexpr struct{unsigned int value; char s;} symbols[] ={
 {1000, 'M'},
 {500, 'D'},
 {100, 'C'},

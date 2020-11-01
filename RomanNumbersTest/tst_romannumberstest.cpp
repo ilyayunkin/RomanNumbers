@@ -46,7 +46,7 @@ void RomanNumbersTest::cleanupTestCase()
 
 void RomanNumbersTest::test_ConvertsToBaseSymbols()
 {
-    struct{int i; QString s;} lines[]  = {
+    constexpr struct{int i; const char *const s;} lines[]  = {
     {1, "I"},
     {5, "V"},
     {10, "X"},
@@ -64,7 +64,7 @@ void RomanNumbersTest::test_ConvertsToBaseSymbols()
 
 void RomanNumbersTest::test_ConvertsBaseSymbolsQuants()
 {
-    struct{int i; QString s;} lines[]  = {
+    constexpr struct{int i; const char *const s;} lines[]  = {
     {1, "I"},
     {2, "II"},
     {3, "III"},
@@ -90,7 +90,7 @@ void RomanNumbersTest::test_ConvertsBaseSymbolsQuants()
 
 void RomanNumbersTest::test_ConvertsNumbersWithAddition()
 {
-    struct{int i; QString s;} lines[]  = {
+    constexpr struct{int i; const char *const s;} lines[]  = {
     {6, "VI"},
     {7, "VII"},
     {8, "VIII"},
@@ -106,7 +106,7 @@ void RomanNumbersTest::test_ConvertsNumbersWithAddition()
 
 void RomanNumbersTest::test_ConvertsNumbersWithSubstraction()
 {
-    struct{int i; QString s;} lines[]  = {
+    constexpr struct{int i; const char *const s;} lines[]  = {
     {4, "IV"},
     {9, "IX"},
     {40, "XL"},
@@ -122,7 +122,7 @@ void RomanNumbersTest::test_ConvertsNumbersWithSubstraction()
 
 void RomanNumbersTest::test_ConvertsComplexNumbers()
 {
-    struct{int i; QString s;} lines[]  = {
+    constexpr struct{int i; const char *const s;} lines[]  = {
     {4, "IV"},
     {6, "VI"},
     {7, "VII"},
