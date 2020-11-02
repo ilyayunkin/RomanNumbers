@@ -182,7 +182,7 @@ void RomanNumbersTest::test_ToUintConvertsBaseSymbols()
 };
     for(auto line : lines)
     {
-        auto result = RomanNumbers::toUInt(QString(line.s));
+        auto result = RomanNumbers::toUInt(std::string(line.s));
         QCOMPARE(result, line.i);
     }
 }
@@ -208,7 +208,7 @@ void RomanNumbersTest::test_ToUintConvertsBaseSymbolsQuants()
 };
     for(auto line : lines)
     {
-        auto result = RomanNumbers::toUInt(QString(line.s));
+        auto result = RomanNumbers::toUInt(std::string(line.s));
         QCOMPARE(result, line.i);
     }
 }
@@ -224,7 +224,7 @@ void RomanNumbersTest::test_ToUintConvertsNumbersWithAddition()
 };
     for(auto line : lines)
     {
-        auto result = RomanNumbers::toUInt(QString(line.s));
+        auto result = RomanNumbers::toUInt(std::string(line.s));
         QCOMPARE(result, line.i);
     }
 }
@@ -240,7 +240,7 @@ void RomanNumbersTest::test_ToUintConvertsNumbersWithSubstraction()
 };
     for(auto line : lines)
     {
-        auto result = RomanNumbers::toUInt(QString(line.s));
+        auto result = RomanNumbers::toUInt(std::string(line.s));
         QCOMPARE(result, line.i);
     }
 }

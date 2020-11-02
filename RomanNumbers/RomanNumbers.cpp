@@ -1,5 +1,5 @@
 #include "RomanNumbers.h"
-#include <exception>
+#include <stdexcept>
 #include <algorithm>
 
 namespace  {
@@ -14,7 +14,7 @@ constexpr struct{unsigned int value; char s;} symbols[] ={
 };
 }
 
-QString RomanNumbers::toString(const unsigned int number)
+std::string RomanNumbers::toString(const unsigned int number)
 {
     if(number > maxValue)
         throw std::runtime_error("Too large number");
@@ -24,7 +24,7 @@ QString RomanNumbers::toString(const unsigned int number)
         if(it->value <= number)
         {
             const auto result = number / it->value;
-            return QString().fill(it->s, result)
+            return std::string(result, it->s)
                     + toString(number % it->value);
         }else if(it->value != 1)
         {
@@ -37,17 +37,17 @@ QString RomanNumbers::toString(const unsigned int number)
             const auto result = it->value - left->value;
             if(result <= number)
             {
-                return QString(left->s) + it->s
+                return std::string(1, left->s) + it->s
                         + toString(number - result);
             }
         }
     }
-    return QString();
+    return std::string();
 }
 
-unsigned int RomanNumbers::toUInt(const QString &input)
+unsigned int RomanNumbers::toUInt(const std::string_view &input)
 {
-    if(input.isEmpty())
+    if(input.empty())
         throw std::runtime_error("Empty input");
 
     unsigned int ret = 0;

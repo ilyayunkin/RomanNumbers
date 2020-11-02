@@ -24,7 +24,7 @@ RomanNumbersWidget::~RomanNumbersWidget()
 void RomanNumbersWidget::toString(int value)
 {
     try {
-        ui->resultLineEdit->setText(RomanNumbers::toString(value));
+        ui->resultLineEdit->setText(RomanNumbers::toString(value).data());
     } catch (...) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Input number between 1 and %1")
@@ -36,7 +36,7 @@ void RomanNumbersWidget::toInt()
 {
     try {
         ui->inputSpinBox->setValue(
-                    RomanNumbers::toUInt(ui->resultLineEdit->text()));
+                    RomanNumbers::toUInt(ui->resultLineEdit->text().toLatin1().data()));
     } catch (...) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Invalid input. Input number between 1 and %1")
