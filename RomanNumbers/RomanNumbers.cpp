@@ -69,6 +69,18 @@ unsigned int RomanNumbers::toUInt(const std::string_view &input)
                 ret+= it->value;
             }else
             {
+                if(((it->value == 5 )
+                    || (it->value == 50)
+                    || (it->value == 500)))
+                {
+                    throw std::runtime_error("Invalid format");
+                }
+                if((previous != (it - 1)->value)
+                        && (previous != (it - 2)->value))
+                {
+                    throw std::runtime_error("Invalid format");
+                }
+
                 ret-= it->value;
             }
             previous = it->value;

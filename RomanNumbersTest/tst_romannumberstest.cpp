@@ -28,6 +28,8 @@ private slots:
     void test_ToUintConvertsNumbersWithSubstraction();
     void test_ToUintThrowsExceptionIfInputIsEmpty();
     void test_ToUintThrowsExceptionIfInputContainsRepeated5th();
+    void test_ToUintThrowsExceptionIfInputContainsSubstractionOf5th();
+    void test_ToUintThrowsExceptionIfInputContainsSubstractionOfFarDigits();
     void test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols();
 };
 
@@ -271,6 +273,46 @@ void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsRepeated5th()
             QVERIFY(true);
         }
     }
+}
+
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsSubstractionOf5th()
+{
+    const char *const lines[] = {
+        "VX",
+        "LD",
+        "DM"
+    };
+    for(auto line : lines)
+    {
+        try {
+            RomanNumbers::toUInt(line);
+            QVERIFY(false);
+        } catch (...) {
+            QVERIFY(true);
+        }
+    }
+}
+
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsSubstractionOfFarDigits()
+{
+    const char *const lines[] = {
+        "IL",
+        "IC",
+        "ID",
+        "IM",
+        "XD",
+        "XM"
+    };
+    for(auto line : lines)
+    {
+        try {
+            RomanNumbers::toUInt(line);
+            QVERIFY(false);
+        } catch (...) {
+            QVERIFY(true);
+        }
+    }
+
 }
 
 void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols()
