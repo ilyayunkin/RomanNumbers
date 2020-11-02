@@ -58,9 +58,12 @@ unsigned int RomanNumbers::toUInt(const std::string_view &input)
                                      [&inputIt](const auto &d){return *inputIt == d.s;});
         if(it != std::end(symbols))
         {
-            if((it->value == previous) && ((previous == 5 )
-                                           || (previous == 50)
-                                           || (previous == 500)))
+            auto repeatOfNotPowerOfTen = [&previous, &it](){
+                return (it->value == previous)
+                        && ((previous == 5 )
+                            || (previous == 50)
+                            || (previous == 500));};
+            if(repeatOfNotPowerOfTen())
             {
                 throw std::runtime_error("Invalid format");
             }
@@ -69,14 +72,19 @@ unsigned int RomanNumbers::toUInt(const std::string_view &input)
                 ret+= it->value;
             }else
             {
-                if(((it->value == 5 )
-                    || (it->value == 50)
-                    || (it->value == 500)))
+                auto subtractionOfNonPowerOfTen = [&it]{
+                    return ((it->value == 5 )
+                            || (it->value == 50)
+                            || (it->value == 500));};
+                if(subtractionOfNonPowerOfTen())
                 {
                     throw std::runtime_error("Invalid format");
                 }
-                if((previous != (it - 1)->value)
-                        && (previous != (it - 2)->value))
+
+                auto subtractionOfFarDigit = [&it, &previous]{
+                    return (previous != (it - 1)->value)
+                            && (previous != (it - 2)->value);};
+                if(subtractionOfFarDigit())
                 {
                     throw std::runtime_error("Invalid format");
                 }
