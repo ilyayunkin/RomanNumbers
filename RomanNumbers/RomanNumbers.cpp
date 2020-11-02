@@ -12,6 +12,21 @@ constexpr struct{unsigned int value; char s;} symbols[] ={
 {5, 'V'},
 {1, 'I'}
 };
+constexpr struct{unsigned int value; const char *const s;} symbols2[] ={
+{1000, "M"},
+{900, "CM"},
+{500, "D"},
+{400, "CD"},
+{100, "C"},
+{90, "XC"},
+{50, "L"},
+{40, "XL"},
+{10, "X"},
+{9, "IX"},
+{5, "V"},
+{4, "IV"},
+{1, "I"}
+};
 }
 
 std::string RomanNumbers::toString(const unsigned int number)
@@ -19,30 +34,20 @@ std::string RomanNumbers::toString(const unsigned int number)
     if(number > maxValue)
         throw std::runtime_error("Too large number");
 
-    for(auto it = std::begin(symbols); it != std::end(symbols); ++it)
+    auto n = number;
+    std::string ret;
+    auto it = std::begin(symbols2);
+    while(n)
     {
-        if(it->value <= number)
+        if(it->value <= n)
         {
-            const auto result = number / it->value;
-            return std::string(result, it->s)
-                    + toString(number % it->value);
-        }else if(it->value != 1)
-        {
-            const auto left =
-                    ((it->value == 5 )
-                     || (it->value == 50)
-                     || (it->value == 500))
-                    ? (it + 1)
-                    : (it + 2);
-            const auto result = it->value - left->value;
-            if(result <= number)
-            {
-                return std::string(1, left->s) + it->s
-                        + toString(number - result);
-            }
+            ret.append(it->s);
+            n-= it->value;
+        }else{
+            ++it;
         }
     }
-    return std::string();
+    return ret;
 }
 
 unsigned int RomanNumbers::toUInt(const std::string_view &input)
