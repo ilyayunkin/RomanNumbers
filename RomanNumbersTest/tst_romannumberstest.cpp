@@ -31,6 +31,7 @@ private slots:
     void test_ToUintThrowsExceptionIfInputContainsSubstractionOf5th();
     void test_ToUintThrowsExceptionIfInputContainsSubstractionOfFarDigits();
     void test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols();
+    void ToUIntBenchmark();
 };
 
 RomanNumbersTest::RomanNumbersTest()
@@ -329,6 +330,31 @@ void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSym
             QVERIFY(false);
         } catch (...) {
             QVERIFY(true);
+        }
+    }
+}
+
+void RomanNumbersTest::ToUIntBenchmark()
+{
+    constexpr struct{unsigned int i; const char *const s;} lines[]  = {
+    {4, "IV"},
+    {6, "VI"},
+    {7, "VII"},
+    {8, "VIII"},
+    {9, "IX"},
+    {40, "XL"},
+    {60, "LX"},
+    {80, "LXXX"},
+    {90, "XC"},
+    {400, "CD"},
+    {82, "LXXXII"},
+    {1900, "MCM"},
+    {1988, "MCMLXXXVIII"}
+};
+    QBENCHMARK {
+        for(auto line : lines)
+        {
+            RomanNumbers::toUInt(line.s);
         }
     }
 }
