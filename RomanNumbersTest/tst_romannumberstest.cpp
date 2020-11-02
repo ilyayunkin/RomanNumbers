@@ -27,7 +27,7 @@ private slots:
     void test_ToUintConvertsNumbersWithAddition();
     void test_ToUintConvertsNumbersWithSubstraction();
     void test_ToUintThrowsExceptionIfInputIsEmpty();
-    void test_ToUintThrowsExceptionIfInputContainsRepeated5th();
+    void test_ToUintThrowsExceptionIfInputContainsRepeatedNonPowerOf10();
     void test_ToUintThrowsExceptionIfInputContainsSubstractionOf5th();
     void test_ToUintThrowsExceptionIfInputContainsSubstractionOfFarDigits();
     void test_ToUintThrowsExceptionIfInputContainsNonRomanDigitSymbols();
@@ -258,12 +258,17 @@ void RomanNumbersTest::test_ToUintThrowsExceptionIfInputIsEmpty()
     }
 }
 
-void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsRepeated5th()
+void RomanNumbersTest::test_ToUintThrowsExceptionIfInputContainsRepeatedNonPowerOf10()
 {
     const char *const lines[] = {
         "VV",
         "LLL",
-        "DD"
+        "DD",
+        "IVIV",
+        "CMCM",
+        "XLXL",
+        "CDCD",
+        "CMCM"
     };
     for(auto line : lines)
     {
